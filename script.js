@@ -594,6 +594,394 @@ function calcularPrecioReceta(){
 }
 
 //========================================
+// SERVICIOS TRIBUTARIOS
+//========================================
+
+let productosFactura = [];
+
+function agregarProductoFactura(){
+    let nombre = document.getElementById("prodNombre").value.trim();
+    let precio = parseFloat(document.getElementById("prodPrecio").value);
+    let cant = parseInt(document.getElementById("prodCant").value);
+    let iva = parseInt(document.getElementById("prodIva").value);
+    if(nombre=="" || isNaN(precio) || isNaN(cant) || cant<1){
+        alert("Complete los datos del producto.");
+        return;
+    }
+    productosFactura.push({nombre, precio, cant, iva});
+    mostrarProductos();
+    document.getElementById("prodNombre").value="";
+    document.getElementById("prodPrecio").value="";
+    document.getElementById("prodCant").value="1";
+}
+
+function mostrarProductos(){
+    let tabla = document.getElementById("tablaProductos");
+    tabla.innerHTML = "";
+    for(let p of productosFactura){
+        let subtotal = p.precio * p.cant;
+        tabla.innerHTML += `<tr><td>${p.nombre}</td><td>$${p.precio.toFixed(2)}</td><td>${p.cant}</td><td>${p.iva}%</td><td>$${subtotal.toFixed(2)}</td></tr>`;
+    }
+}
+
+function calcularFactura(){
+    if(productosFactura.length===0){
+        alert("Agregue productos primero.");
+        return;
+    }
+    let subtotal12 = 0, subtotal0 = 0;
+    for(let p of productosFactura){
+        let base = p.precio * p.cant;
+        if(p.iva===12) subtotal12 += base;
+        else subtotal0 += base;
+    }
+    let iva = subtotal12 * 0.12;
+    let total = subtotal12 + subtotal0 + iva;
+    document.getElementById("resultadoFactura").innerHTML =
+        `<b>Subtotal 12%:</b> $${subtotal12.toFixed(2)}<br>
+         <b>Subtotal 0%:</b> $${subtotal0.toFixed(2)}<br>
+         <b>IVA (12%):</b> $${iva.toFixed(2)}<br>
+         <b>TOTAL FACTURA:</b> $${total.toFixed(2)}`;
+}
+
+function calcularDeclaracionSRI(){
+    let base12 = parseFloat(document.getElementById("base12").value) || 0;
+    let base0 = parseFloat(document.getElementById("base0").value) || 0;
+    let ivaCobrado = parseFloat(document.getElementById("ivaCobrado").value) || 0;
+    let ivaPagado = parseFloat(document.getElementById("ivaPagado").value) || 0;
+    let ivaGenerado = base12 * 0.12;
+    let ivaAPagar = ivaGenerado - ivaPagado;
+    if(ivaAPagar < 0) ivaAPagar = 0;
+    document.getElementById("resultadoSRI").innerHTML =
+        `<b>Total ventas:</b> $${(base12+base0).toFixed(2)} (12%: $${base12.toFixed(2)} | 0%: $${base0.toFixed(2)})<br>
+         <b>IVA generado:</b> $${ivaGenerado.toFixed(2)}<br>
+         <b>Crédito fiscal (IVA compras):</b> $${ivaPagado.toFixed(2)}<br>
+         <b>IVA a pagar al SRI:</b> $${ivaAPagar.toFixed(2)}<br>
+         <hr style="margin:8px 0;">
+         <i>Formulario 104 — Declaración mensual de IVA</i>`;
+}
+
+//========================================
+// SISTEMAS DE VENTAS
+//========================================
+
+let carritoPOS = [];
+
+function agregarAlCarrito(){
+    let producto = document.getElementById("posProducto").value.trim();
+    let precio = parseFloat(document.getElementById("posPrecio").value);
+    let cant = parseInt(document.getElementById("posCant").value);
+    if(producto=="" || isNaN(precio) || isNaN(cant) || cant<1){
+        alert("Complete los datos del producto.");
+        return;
+    }
+    carritoPOS.push({producto, precio, cant});
+    mostrarCarrito();
+    document.getElementById("posProducto").value="";
+    document.getElementById("posPrecio").value="";
+    document.getElementById("posCant").value="1";
+}
+
+function mostrarCarrito(){
+    let tabla = document.getElementById("tablaCarrito");
+    tabla.innerHTML = "";
+    let total = 0;
+    for(let item of carritoPOS){
+        let subtotal = item.precio * item.cant;
+        total += subtotal;
+        tabla.innerHTML += `<tr><td>${item.producto}</td><td>$${item.precio.toFixed(2)}</td><td>${item.cant}</td><td>$${subtotal.toFixed(2)}</td></tr>`;
+    }
+    tabla.innerHTML += `<tr style="background:#dbeafe;font-weight:bold;"><td colspan="3">TOTAL</td><td>$${total.toFixed(2)}</td></tr>`;
+}
+
+function finalizarVenta(){
+    if(carritoPOS.length===0){
+        alert("El carrito está vacío.");
+        return;
+    }
+    let total = carritoPOS.reduce((s,item) => s + item.precio*item.cant, 0);
+    document.getElementById("resultadoPOS").innerHTML =
+        `<b>VENTA REGISTRADA</b><br>
+         Productos: ${carritoPOS.length}<br>
+         Total: $${total.toFixed(2)}<br>
+         <span style="color:green;">✓ Pago procesado</span>`;
+    carritoPOS = [];
+    mostrarCarrito();
+}
+
+function limpiarCarrito(){
+    carritoPOS = [];
+    mostrarCarrito();
+    document.getElementById("resultadoPOS").innerHTML = "";
+}
+
+function generarFacturaElectronica(){
+    let ruc = document.getElementById("facRuc").value.trim();
+    let razon = document.getElementById("facRazon").value.trim();
+    let dir = document.getElementById("facDir").value.trim();
+    let desc = document.getElementById("facDesc").value.trim();
+    let cant = parseInt(document.getElementById("facCant").value);
+    let precio = parseFloat(document.getElementById("facPrecio").value);
+    let iva = parseInt(document.getElementById("facIva").value);
+    if(!ruc || !razon || !desc || isNaN(cant) || isNaN(precio)){
+        alert("Complete todos los datos de la factura.");
+        return;
+    }
+    let subtotal = cant * precio;
+    let valorIVA = iva===12 ? subtotal*0.12 : 0;
+    let total = subtotal + valorIVA;
+    let fecha = new Date().toLocaleDateString("es-EC");
+    let secuencial = String(Math.floor(Math.random()*900000)+100000);
+    document.getElementById("resultadoFacturaElectronica").innerHTML =
+        `<b>COMPROBANTE ELECTRÓNICO</b><br>
+         <hr>
+         <b>RUC:</b> ${ruc}<br>
+         <b>Razón Social:</b> ${razon}<br>
+         <b>Dirección:</b> ${dir}<br>
+         <hr>
+         <b>Factura #</b> 001-001-${secuencial}<br>
+         <b>Fecha:</b> ${fecha}<br>
+         <hr>
+         <b>Descripción:</b> ${desc}<br>
+         <b>Cantidad:</b> ${cant}<br>
+         <b>Precio Unit.:</b> $${precio.toFixed(2)}<br>
+         <b>Subtotal:</b> $${subtotal.toFixed(2)}<br>
+         <b>IVA (${iva}%):</b> $${valorIVA.toFixed(2)}<br>
+         <b>TOTAL:</b> $${total.toFixed(2)}<br>
+         <hr>
+         <span style="color:green;">✓ Autorizado SRI — Ambiente de pruebas</span>`;
+}
+
+//========================================
+// ESTADÍSTICA Y ANÁLISIS
+//========================================
+
+function calcularEstadistica(){
+    let texto = document.getElementById("datosEstadistica").value.trim();
+    if(texto==""){
+        alert("Ingrese los datos separados por coma.");
+        return;
+    }
+    let datos = texto.split(",").map(Number).filter(n => !isNaN(n));
+    if(datos.length===0){
+        alert("Ingrese al menos un número válido.");
+        return;
+    }
+    datos.sort((a,b)=>a-b);
+    let suma = datos.reduce((s,n)=>s+n,0);
+    let media = suma / datos.length;
+    let mediana;
+    if(datos.length % 2 === 0){
+        mediana = (datos[datos.length/2-1] + datos[datos.length/2]) / 2;
+    } else {
+        mediana = datos[Math.floor(datos.length/2)];
+    }
+    let freq = {};
+    for(let n of datos){
+        freq[n] = (freq[n]||0) + 1;
+    }
+    let maxFreq = Math.max(...Object.values(freq));
+    let modas = Object.keys(freq).filter(k => freq[k]===maxFreq).map(Number);
+    let modaStr = modas.length===datos.length ? "No hay moda (todos únicos)" : modas.join(", ");
+    let rango = datos[datos.length-1] - datos[0];
+    document.getElementById("resultadoEstadistica").innerHTML =
+        `<b>Datos:</b> ${datos.join(", ")}<br>
+         <b>Total:</b> ${datos.length} valores<br>
+         <b>Media (Promedio):</b> ${media.toFixed(2)}<br>
+         <b>Mediana:</b> ${mediana.toFixed(2)}<br>
+         <b>Moda:</b> ${modaStr}<br>
+         <b>Mínimo:</b> ${datos[0]}<br>
+         <b>Máximo:</b> ${datos[datos.length-1]}<br>
+         <b>Rango:</b> ${rango.toFixed(2)}`;
+}
+
+function calcularPorcentaje(){
+    let valor = parseFloat(document.getElementById("porcValor").value);
+    let total = parseFloat(document.getElementById("porcTotal").value);
+    if(isNaN(valor) || isNaN(total) || total===0){
+        alert("Ingrese valores válidos (total distinto de 0).");
+        return;
+    }
+    let pct = (valor / total) * 100;
+    document.getElementById("resultadoPorcentaje").innerHTML =
+        `<b>${valor}</b> es el <b>${pct.toFixed(2)}%</b> de <b>${total}</b>`;
+}
+
+function aplicarPorcentaje(){
+    let base = parseFloat(document.getElementById("porcBase").value);
+    let pct = parseFloat(document.getElementById("porcPct").value);
+    if(isNaN(base) || isNaN(pct)){
+        alert("Ingrese valores válidos.");
+        return;
+    }
+    let resultado = base * (1 + pct/100);
+    document.getElementById("resultadoPorcentaje").innerHTML =
+        `<b>${base}</b> + <b>${pct}%</b> = <b>${resultado.toFixed(2)}</b> (incremento)<br>
+         <b>${base}</b> - <b>${pct}%</b> = <b>${(base * (1 - pct/100)).toFixed(2)}</b> (descuento)`;
+}
+
+function analizarTendencia(){
+    let texto = document.getElementById("datosTendencia").value.trim();
+    if(texto==""){
+        alert("Ingrese los datos separados por coma.");
+        return;
+    }
+    let datos = texto.split(",").map(Number).filter(n => !isNaN(n));
+    if(datos.length<2){
+        alert("Ingrese al menos 2 valores.");
+        return;
+    }
+    let n = datos.length;
+    let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+    for(let i=0; i<n; i++){
+        sumX += i+1;
+        sumY += datos[i];
+        sumXY += (i+1) * datos[i];
+        sumX2 += (i+1)*(i+1);
+    }
+    let pendiente = (n*sumXY - sumX*sumY) / (n*sumX2 - sumX*sumX);
+    let interseccion = (sumY - pendiente*sumX) / n;
+    let prox = interseccion + pendiente*(n+1);
+    let direccion = pendiente>0 ? "creciente ↗" : pendiente<0 ? "decreciente ↘" : "estable →";
+    document.getElementById("resultadoTendencia").innerHTML =
+        `<b>Tendencia:</b> ${direccion}<br>
+         <b>Pendiente:</b> ${pendiente.toFixed(4)} (cambio por período)<br>
+         <b>Ecuación:</b> y = ${pendiente.toFixed(4)}x + ${interseccion.toFixed(4)}<br>
+         <b>Datos:</b> ${datos.join(", ")}<br>
+         <b>Proyección próximo período:</b> ${prox.toFixed(2)}`;
+}
+
+function detectarAnomalias(){
+    let texto = document.getElementById("datosAnomalia").value.trim();
+    if(texto==""){
+        alert("Ingrese los datos separados por coma.");
+        return;
+    }
+    let datos = texto.split(",").map(Number).filter(n => !isNaN(n));
+    if(datos.length<3){
+        alert("Ingrese al menos 3 valores.");
+        return;
+    }
+    let media = datos.reduce((s,n)=>s+n,0) / datos.length;
+    let varianza = datos.reduce((s,n)=>s+(n-media)**2,0) / datos.length;
+    let desviacion = Math.sqrt(varianza);
+    let anomalias = [];
+    for(let n of datos){
+        let z = (n - media) / desviacion;
+        if(Math.abs(z) > 2) anomalias.push({valor: n, z: z.toFixed(2)});
+    }
+    document.getElementById("resultadoAnomalia").innerHTML =
+        `<b>Media:</b> ${media.toFixed(2)}<br>
+         <b>Desviación estándar:</b> ${desviacion.toFixed(2)}<br>
+         <b>Total datos:</b> ${datos.length}<br>
+         ${anomalias.length===0
+             ? '<span style="color:green;">✓ No se detectaron anomalías significativas (|z| ≤ 2)</span>'
+             : `<span style="color:#b71c1c;">⚠ Se detectaron ${anomalias.length} anomalía(s):</span><br>
+                ${anomalias.map(a => `${a.valor} (z = ${a.z})`).join("<br>")}`}`;
+}
+
+//========================================
+// BUSINESS INTELLIGENCE
+//========================================
+
+function actualizarDashboard(){
+    let ventas = parseFloat(document.getElementById("dashInVentas").value) || 0;
+    let gastos = parseFloat(document.getElementById("dashInGastos").value) || 0;
+    let utilidad = ventas - gastos;
+    let margen = ventas>0 ? (utilidad/ventas)*100 : 0;
+    document.getElementById("dashVentas").textContent = "$" + ventas.toFixed(2);
+    document.getElementById("dashGastos").textContent = "$" + gastos.toFixed(2);
+    document.getElementById("dashUtilidad").textContent = "$" + utilidad.toFixed(2);
+    document.getElementById("dashMargen").textContent = margen.toFixed(1) + "%";
+}
+
+function analizarVentas(){
+    let texto = document.getElementById("ventasSemanales").value.trim();
+    if(texto==""){
+        alert("Ingrese las ventas diarias separadas por coma.");
+        return;
+    }
+    let datos = texto.split(",").map(Number).filter(n => !isNaN(n));
+    if(datos.length===0){
+        alert("Ingrese valores válidos.");
+        return;
+    }
+    let total = datos.reduce((s,n)=>s+n,0);
+    let promedio = total / datos.length;
+    let max = Math.max(...datos);
+    let min = Math.min(...datos);
+    let dias = ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
+    let detalle = datos.map((v,i) =>
+        `${dias[i]||"Día"+(i+1)}: $${v.toFixed(2)}`
+    ).join(" | ");
+    document.getElementById("resultadoVentas").innerHTML =
+        `<b>Resumen Semanal</b><br>
+         ${detalle}<br>
+         <b>Total:</b> $${total.toFixed(2)}<br>
+         <b>Promedio diario:</b> $${promedio.toFixed(2)}<br>
+         <b>Mejor día:</b> $${max.toFixed(2)}<br>
+         <b>Peor día:</b> $${min.toFixed(2)}`;
+}
+
+function evaluarAlerta(){
+    let valor = parseFloat(document.getElementById("alertaValor").value);
+    let meta = parseFloat(document.getElementById("alertaMeta").value);
+    if(isNaN(valor) || isNaN(meta) || meta<=0){
+        alert("Ingrese valores válidos.");
+        return;
+    }
+    let pct = (valor/meta)*100;
+    let color, icono, msg;
+    if(pct >= 100){
+        color = "green"; icono = "✓"; msg = "META ALCANZADA";
+    } else if(pct >= 80){
+        color = "#ff8f00"; icono = "⚠"; msg = "PRÓXIMO A LA META";
+    } else if(pct >= 50){
+        color = "#e65100"; icono = "⚡"; msg = "MITAD DE LA META";
+    } else {
+        color = "#b71c1c"; icono = "✗"; msg = "DEBAJO DE LA META — REVISAR";
+    }
+    document.getElementById("resultadoAlerta").innerHTML =
+        `<b style="color:${color};font-size:22px;">${icono} ${msg}</b><br>
+         Valor actual: $${valor.toFixed(2)}<br>
+         Meta: $${meta.toFixed(2)}<br>
+         Cumplimiento: ${pct.toFixed(1)}%`;
+}
+
+function analizarConsumo(){
+    let texto = document.getElementById("consumoDatos").value.trim();
+    if(texto==""){
+        alert("Ingrese los datos de consumo.");
+        return;
+    }
+    let lineas = texto.split("\n").filter(l => l.trim());
+    let categorias = [];
+    let total = 0;
+    for(let linea of lineas){
+        let partes = linea.split(",").map(s => s.trim());
+        if(partes.length>=2){
+            let nombre = partes[0];
+            let valor = parseFloat(partes[1]);
+            if(!isNaN(valor)){
+                categorias.push({nombre, valor});
+                total += valor;
+            }
+        }
+    }
+    if(categorias.length===0){
+        alert("No se pudieron leer los datos. Use formato: Nombre,Valor");
+        return;
+    }
+    let html = `<b>Distribución de Gastos</b><br><table style="width:100%;margin-top:10px;"><thead><tr><th>Categoría</th><th>Valor</th><th>%</th></tr></thead><tbody>`;
+    for(let c of categorias.sort((a,b)=>b.valor-a.valor)){
+        let pct = (c.valor/total)*100;
+        html += `<tr><td>${c.nombre}</td><td>$${c.valor.toFixed(2)}</td><td>${pct.toFixed(1)}%</td></tr>`;
+    }
+    html += `<tr style="background:#dbeafe;font-weight:bold;"><td>TOTAL</td><td>$${total.toFixed(2)}</td><td>100%</td></tr></tbody></table>`;
+    document.getElementById("resultadoConsumo").innerHTML = html;
+}
+
+//========================================
 // LIMPIAR FORMULARIOS
 //========================================
 

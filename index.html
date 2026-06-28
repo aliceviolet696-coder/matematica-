@@ -38,6 +38,14 @@
 
             <li><a href="#costos">Costos y Presupuestos</a></li>
 
+            <li><a href="#tributarios">Tributario</a></li>
+
+            <li><a href="#ventas">Ventas</a></li>
+
+            <li><a href="#estadistica">Estadística</a></li>
+
+            <li><a href="#inteligencia">BI</a></li>
+
         </ul>
 
     </nav>
@@ -566,6 +574,295 @@ Calcular
     <p><b>Sistemas de Inventario:</b> Control y valoración de existencias usando métodos como PEPS, UEPS o costo promedio ponderado.</p>
 
     <p><b>Simuladores de Rentabilidad:</b> Modelos que proyectan escenarios de ingresos, costos y utilidades para evaluar la viabilidad de un negocio.</p>
+
+</section>
+
+<!--==================================================-->
+<!-- SERVICIOS TRIBUTARIOS -->
+<!--==================================================-->
+
+<section id="tributarios" class="contenedor">
+
+    <h2>Servicios Tributarios</h2>
+
+    <p>Gestión completa de impuestos y facturación electrónica. Calcule IVA, totales de factura y declaraciones mensuales al SRI.</p>
+
+    <h3>Facturación con IVA</h3>
+
+    <div class="calculadora">
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <input type="text" id="prodNombre" placeholder="Producto" style="flex:1;min-width:120px;">
+            <input type="number" id="prodPrecio" placeholder="Precio $" style="flex:1;min-width:100px;">
+            <input type="number" id="prodCant" placeholder="Cantidad" style="flex:1;min-width:80px;" value="1">
+            <select id="prodIva" style="flex:1;min-width:100px;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:16px;background:white;">
+                <option value="12">IVA 12%</option>
+                <option value="0">IVA 0%</option>
+            </select>
+            <button onclick="agregarProductoFactura()" style="margin:0;">+ Agregar</button>
+        </div>
+
+        <table>
+            <thead><tr><th>Producto</th><th>Precio</th><th>Cant.</th><th>% IVA</th><th>Subtotal</th></tr></thead>
+            <tbody id="tablaProductos"></tbody>
+        </table>
+
+        <button onclick="calcularFactura()">Calcular Total Factura</button>
+
+        <div id="resultadoFactura" style="color:#0d47a1;font-size:18px;margin-top:15px;"></div>
+
+    </div>
+
+    <h3>Declaración Mensual al SRI — Formulario 104</h3>
+
+    <div class="calculadora">
+
+        <label>Ventas tarifa 12% (base imponible)</label>
+        <input type="number" id="base12" placeholder="0.00">
+
+        <label>Ventas tarifa 0%</label>
+        <input type="number" id="base0" placeholder="0.00">
+
+        <label>IVA generado en ventas</label>
+        <input type="number" id="ivaCobrado" placeholder="0.00">
+
+        <label>IVA pagado en compras (crédito fiscal)</label>
+        <input type="number" id="ivaPagado" placeholder="0.00">
+
+        <button onclick="calcularDeclaracionSRI()">Calcular Declaración SRI</button>
+
+        <div id="resultadoSRI" style="color:#0d47a1;font-size:18px;margin-top:15px;"></div>
+
+    </div>
+
+</section>
+
+<!--==================================================-->
+<!-- SISTEMAS DE VENTAS -->
+<!--==================================================-->
+
+<section id="ventas" class="contenedor">
+
+    <h2>Sistemas de Ventas</h2>
+
+    <p>Punto de venta, facturación y simulación tributaria para su negocio.</p>
+
+    <h3>Sistema POS — Punto de Venta</h3>
+
+    <div class="calculadora">
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <input type="text" id="posProducto" placeholder="Producto" style="flex:1;min-width:120px;">
+            <input type="number" id="posPrecio" placeholder="Precio $" style="flex:1;min-width:100px;">
+            <input type="number" id="posCant" placeholder="Cantidad" style="flex:1;min-width:80px;" value="1">
+            <button onclick="agregarAlCarrito()" style="margin:0;">+ Vender</button>
+        </div>
+
+        <table>
+            <thead><tr><th>Producto</th><th>Precio</th><th>Cant.</th><th>Total</th></tr></thead>
+            <tbody id="tablaCarrito"></tbody>
+        </table>
+
+        <button onclick="finalizarVenta()">Finalizar Venta</button>
+        <button onclick="limpiarCarrito()" style="background:#b71c1c;">Cancelar Venta</button>
+
+        <div id="resultadoPOS" style="color:#0d47a1;font-size:18px;margin-top:15px;"></div>
+
+    </div>
+
+    <h3>Sistema de Facturación Electrónica</h3>
+
+    <div class="calculadora">
+
+        <label>RUC / Cédula del cliente</label>
+        <input type="text" id="facRuc" placeholder="1234567890001">
+
+        <label>Razón social</label>
+        <input type="text" id="facRazon" placeholder="Nombre del cliente">
+
+        <label>Dirección</label>
+        <input type="text" id="facDir" placeholder="Dirección">
+
+        <label>Descripción del producto o servicio</label>
+        <input type="text" id="facDesc" placeholder="Ej: Servicio de consultoría">
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <input type="number" id="facCant" placeholder="Cantidad" style="flex:1;min-width:80px;" value="1">
+            <input type="number" id="facPrecio" placeholder="Precio unitario $" style="flex:1;min-width:120px;">
+            <select id="facIva" style="flex:1;min-width:100px;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:16px;background:white;">
+                <option value="12">IVA 12%</option>
+                <option value="0">IVA 0%</option>
+            </select>
+        </div>
+
+        <button onclick="generarFacturaElectronica()">Generar Comprobante Electrónico</button>
+
+        <div id="resultadoFacturaElectronica" style="color:#0d47a1;font-size:16px;margin-top:15px;background:#f0f8ff;padding:15px;border-radius:8px;border:1px solid #b3d9ff;"></div>
+
+    </div>
+
+</section>
+
+<!--==================================================-->
+<!-- ESTADÍSTICA Y ANÁLISIS -->
+<!--==================================================-->
+
+<section id="estadistica" class="contenedor">
+
+    <h2>Estadística y Análisis de Datos</h2>
+
+    <p>Herramientas estadísticas para el análisis de datos financieros y comerciales.</p>
+
+    <h3>Calculadora Estadística</h3>
+
+    <div class="calculadora">
+
+        <label>Ingrese números separados por coma (ej: 10,20,30,40,50)</label>
+        <input type="text" id="datosEstadistica" placeholder="10,20,30,40,50">
+
+        <button onclick="calcularEstadistica()">Calcular</button>
+
+        <div id="resultadoEstadistica" style="color:#0d47a1;font-size:16px;margin-top:15px;background:#f0f8ff;padding:15px;border-radius:8px;"></div>
+
+    </div>
+
+    <h3>Cálculo de Porcentajes</h3>
+
+    <div class="calculadora">
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <input type="number" id="porcValor" placeholder="Valor" style="flex:1;min-width:100px;">
+            <input type="number" id="porcTotal" placeholder="Del total" style="flex:1;min-width:100px;">
+            <button onclick="calcularPorcentaje()" style="margin:0;">Calcular %</button>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+            <input type="number" id="porcBase" placeholder="Base" style="flex:1;min-width:100px;">
+            <input type="number" id="porcPct" placeholder="Porcentaje %" style="flex:1;min-width:100px;">
+            <button onclick="aplicarPorcentaje()" style="margin:0;">Aplicar %</button>
+        </div>
+
+        <div id="resultadoPorcentaje" style="color:#0d47a1;font-size:16px;margin-top:15px;"></div>
+
+    </div>
+
+    <h3>Análisis de Tendencias</h3>
+
+    <div class="calculadora">
+
+        <label>Datos históricos (separados por coma)</label>
+        <input type="text" id="datosTendencia" placeholder="100,120,140,160,180">
+
+        <button onclick="analizarTendencia()">Analizar Tendencia</button>
+
+        <div id="resultadoTendencia" style="color:#0d47a1;font-size:16px;margin-top:15px;"></div>
+
+    </div>
+
+    <h3>Detección de Anomalías</h3>
+
+    <div class="calculadora">
+
+        <label>Datos para analizar (separados por coma)</label>
+        <input type="text" id="datosAnomalia" placeholder="10,12,11,13,45,10,11,12,50,11">
+
+        <button onclick="detectarAnomalias()">Detectar Anomalías</button>
+
+        <div id="resultadoAnomalia" style="color:#0d47a1;font-size:16px;margin-top:15px;"></div>
+
+    </div>
+
+</section>
+
+<!--==================================================-->
+<!-- BUSINESS INTELLIGENCE -->
+<!--==================================================-->
+
+<section id="inteligencia" class="contenedor">
+
+    <h2>Business Intelligence</h2>
+
+    <p>Dashboards, reportes y métricas para la toma de decisiones empresariales.</p>
+
+    <h3>Dashboard Empresarial</h3>
+
+    <div class="calculadora">
+
+        <div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:15px;">
+
+            <div style="flex:1;min-width:140px;background:#e3f2fd;padding:20px;border-radius:10px;text-align:center;">
+                <div style="font-size:12px;color:#1565c0;text-transform:uppercase;">Ventas del Mes</div>
+                <div id="dashVentas" style="font-size:28px;font-weight:bold;color:#0d47a1;margin-top:8px;">$0</div>
+            </div>
+
+            <div style="flex:1;min-width:140px;background:#e8f5e9;padding:20px;border-radius:10px;text-align:center;">
+                <div style="font-size:12px;color:#2e7d32;text-transform:uppercase;">Gastos del Mes</div>
+                <div id="dashGastos" style="font-size:28px;font-weight:bold;color:#1b5e20;margin-top:8px;">$0</div>
+            </div>
+
+            <div style="flex:1;min-width:140px;background:#fff3e0;padding:20px;border-radius:10px;text-align:center;">
+                <div style="font-size:12px;color:#e65100;text-transform:uppercase;">Utilidad Neta</div>
+                <div id="dashUtilidad" style="font-size:28px;font-weight:bold;color:#bf360c;margin-top:8px;">$0</div>
+            </div>
+
+            <div style="flex:1;min-width:140px;background:#f3e5f5;padding:20px;border-radius:10px;text-align:center;">
+                <div style="font-size:12px;color:#6a1b9a;text-transform:uppercase;">Margen</div>
+                <div id="dashMargen" style="font-size:28px;font-weight:bold;color:#4a148c;margin-top:8px;">0%</div>
+            </div>
+
+        </div>
+
+        <label>Ingrese ventas del mes ($)</label>
+        <input type="number" id="dashInVentas" placeholder="0">
+
+        <label>Ingrese gastos del mes ($)</label>
+        <input type="number" id="dashInGastos" placeholder="0">
+
+        <button onclick="actualizarDashboard()">Actualizar Dashboard</button>
+
+    </div>
+
+    <h3>Monitoreo de Ventas</h3>
+
+    <div class="calculadora">
+
+        <label>Registre las ventas diarias de la semana (separadas por coma)</label>
+        <input type="text" id="ventasSemanales" placeholder="200,350,280,400,310,450,380">
+
+        <button onclick="analizarVentas()">Analizar Ventas</button>
+
+        <div id="resultadoVentas" style="color:#0d47a1;font-size:16px;margin-top:15px;"></div>
+
+    </div>
+
+    <h3>Sistema de Alertas</h3>
+
+    <div class="calculadora">
+
+        <label>Valor de venta actual</label>
+        <input type="number" id="alertaValor" placeholder="0">
+
+        <label>Meta mínima del período</label>
+        <input type="number" id="alertaMeta" placeholder="0">
+
+        <button onclick="evaluarAlerta()">Evaluar Alerta</button>
+
+        <div id="resultadoAlerta" style="color:#0d47a1;font-size:18px;margin-top:15px;"></div>
+
+    </div>
+
+    <h3>Análisis de Consumo y Métricas</h3>
+
+    <div class="calculadora">
+
+        <label>Gasto por categoría (nombre, valor) — un par por línea</label>
+        <textarea id="consumoDatos" rows="4" placeholder="Alquiler,1200&#10;Servicios,300&#10;Insumos,800&#10;Publicidad,200&#10;Sueldos,2500" style="width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:16px;font-family:Arial;"></textarea>
+
+        <button onclick="analizarConsumo()">Analizar Consumo</button>
+
+        <div id="resultadoConsumo" style="color:#0d47a1;font-size:16px;margin-top:15px;"></div>
+
+    </div>
 
 </section>
 

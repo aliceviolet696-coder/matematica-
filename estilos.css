@@ -1,0 +1,375 @@
+/*==========================================
+            FINANSMART
+ Proyecto de Matemática Financiera
+==========================================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+    background:#eef3f9;
+    color:#333;
+
+}
+
+/*========================*/
+
+header{
+
+    background:#0d47a1;
+    color:white;
+    text-align:center;
+    padding:20px;
+
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    box-shadow:0px 3px 10px rgba(0,0,0,.3);
+
+}
+
+.logo h1{
+
+    font-size:40px;
+
+}
+
+.logo p{
+
+    margin-top:5px;
+
+}
+
+/*========================*/
+
+nav{
+
+    margin-top:20px;
+
+}
+
+nav ul{
+
+    list-style:none;
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+}
+
+nav ul li a{
+
+    text-decoration:none;
+
+    color:white;
+
+    font-weight:bold;
+
+    padding:10px 18px;
+
+    border-radius:8px;
+
+    transition:.4s;
+
+}
+
+nav ul li a:hover{
+
+    background:#ffc107;
+    color:#222;
+
+}
+
+/*========================*/
+
+.banner{
+
+    background:linear-gradient(135deg,#1565c0,#42a5f5);
+
+    color:white;
+
+    text-align:center;
+
+    padding:70px;
+
+}
+
+.banner h2{
+
+    font-size:45px;
+
+    margin-bottom:20px;
+
+}
+
+.banner p{
+
+    width:80%;
+
+    margin:auto;
+
+    line-height:30px;
+
+    font-size:20px;
+
+}
+
+/*========================*/
+
+.contenedor{
+
+    width:90%;
+
+    max-width:1100px;
+
+    margin:40px auto;
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:30px;
+
+    box-shadow:0px 0px 15px rgba(0,0,0,.12);
+
+}
+
+/*========================*/
+
+.contenedor h2{
+
+    color:#0d47a1;
+
+    margin-bottom:20px;
+
+    border-left:6px solid #ffc107;
+
+    padding-left:10px;
+
+}
+
+.contenedor h3{
+
+    margin-top:20px;
+
+    color:#1565c0;
+
+}
+
+/*========================*/
+
+.contenedor p{
+
+    margin-top:15px;
+
+    line-height:28px;
+
+    text-align:justify;
+
+}
+
+/*========================*/
+
+.calculadora{
+
+    margin-top:25px;
+
+    background:#f4f8fc;
+
+    padding:25px;
+
+    border-radius:10px;
+
+}
+
+/*========================*/
+
+label{
+
+    display:block;
+
+    margin-top:15px;
+
+    font-weight:bold;
+
+}
+
+/*========================*/
+
+input{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-top:8px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    font-size:16px;
+
+}
+
+/*========================*/
+
+button{
+
+    margin-top:20px;
+
+    padding:12px 25px;
+
+    background:#0d47a1;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    transition:.4s;
+
+}
+
+button:hover{
+
+    background:#ffc107;
+
+    color:black;
+
+    transform:scale(1.05);
+
+}
+
+/*========================*/
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:25px;
+
+}
+
+table th{
+
+    background:#1565c0;
+
+    color:white;
+
+    padding:12px;
+
+}
+
+table td{
+
+    border:1px solid #ddd;
+
+    padding:10px;
+
+    text-align:center;
+
+}
+
+table tr:nth-child(even){
+
+    background:#f2f2f2;
+
+}
+
+table tr:hover{
+
+    background:#fff8d6;
+
+}
+
+/*========================*/
+
+footer{
+
+    background:#0d47a1;
+
+    color:white;
+
+    text-align:center;
+
+    padding:30px;
+
+    margin-top:40px;
+
+}
+
+/*========================*/
+
+#respuestaVP,
+#respuestaVF,
+#respuestaSimple,
+#respuestaCompuesto,
+#respuestaCuota,
+#resultadoCredito{
+
+    margin-top:20px;
+
+    color:#0d47a1;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+}
+
+/*========================*/
+
+@media(max-width:900px){
+
+nav ul{
+
+flex-direction:column;
+
+}
+
+.banner{
+
+padding:40px;
+
+}
+
+.banner h2{
+
+font-size:30px;
+
+}
+
+.banner p{
+
+width:100%;
+
+font-size:18px;
+
+}
+
+.contenedor{
+
+width:96%;
+
+}
+
+}

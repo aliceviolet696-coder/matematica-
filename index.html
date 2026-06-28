@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanSmart - Matemática Financiera</title>
+
+    <link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <h1>💰 FinanSmart</h1>
+        <p>Sistema de Matemática Financiera</p>
+    </div>
+
+    <nav>
+
+        <ul>
+
+            <li><a href="#inicio">Inicio</a></li>
+
+            <li><a href="#valorPresente">Valor Presente</a></li>
+
+            <li><a href="#valorFuturo">Valor Futuro</a></li>
+
+            <li><a href="#interesSimple">Interés Simple</a></li>
+
+            <li><a href="#interesCompuesto">Interés Compuesto</a></li>
+
+            <li><a href="#clientes">Clientes</a></li>
+
+            <li><a href="#credito">Crédito</a></li>
+
+        </ul>
+
+    </nav>
+
+</header>
+
+<section id="inicio" class="banner">
+
+    <h2>Bienvenido</h2>
+
+    <p>
+
+        La Matemática Financiera estudia el valor del dinero a través del tiempo,
+        permitiendo calcular inversiones, préstamos, intereses y amortizaciones.
+
+    </p>
+
+</section>
+
+<!--=========================================-->
+
+<section id="valorPresente" class="contenedor">
+
+<h2>Valor Presente</h2>
+
+<h3>¿Qué es?</h3>
+
+<p>
+
+El valor presente representa el valor actual de una cantidad de dinero que será recibida en el futuro considerando una tasa de interés.
+
+</p>
+
+<h3>Fórmula</h3>
+
+<h1>
+
+VP = VF / (1+i)<sup>n</sup>
+
+</h1>
+
+<h3>Ejemplo</h3>
+
+<p>
+
+¿Cuánto debo invertir hoy para obtener $1500 dentro de 3 años con una tasa del 8%?
+
+</p>
+
+<div class="calculadora">
+
+<label>Valor Futuro</label>
+
+<input type="number" id="vf">
+
+<label>Tasa (%)</label>
+
+<input type="number" id="tvp">
+
+<label>Años</label>
+
+<input type="number" id="nvp">
+
+<button onclick="calcularVP()">
+
+Calcular Valor Presente
+
+</button>
+
+<h3 id="respuestaVP"></h3>
+
+</div>
+
+</section>
+
+<!--=========================================-->
+
+<section id="valorFuturo" class="contenedor">
+
+<h2>Valor Futuro</h2>
+
+<p>
+
+El valor futuro indica cuánto valdrá una inversión después de cierto tiempo considerando una tasa de interés.
+
+</p>
+
+<h2>
+
+VF = VP (1+i)<sup>n</sup>
+
+</h2>
+
+<div class="calculadora">
+
+<label>Valor Presente</label>
+
+<input type="number" id="vp">
+
+<label>Tasa (%)</label>
+
+<input type="number" id="tvf">
+
+<label>Años</label>
+
+<input type="number" id="nvf">
+
+<button onclick="calcularVF()">
+
+Calcular Valor Futuro
+
+</button>
+
+<h3 id="respuestaVF"></h3>
+
+</div>
+
+</section>
+
+<!--=========================================-->
+
+<section id="interesSimple" class="contenedor">
+
+<h2>Interés Simple</h2>
+
+<p>
+
+El interés simple se calcula únicamente sobre el capital inicial.
+
+</p>
+
+<h2>
+
+I = C × i × t
+
+</h2>
+
+<div class="calculadora">
+
+<label>Capital</label>
+
+<input type="number" id="capitalSimple">
+
+<label>Tasa (%)</label>
+
+<input type="number" id="tasaSimple">
+
+<label>Tiempo</label>
+
+<input type="number" id="tiempoSimple">
+
+<button onclick="interesSimple()">
+
+Calcular
+
+</button>
+
+<h3 id="respuestaSimple"></h3>
+
+</div>
+
+</section>
+
+<!--=========================================-->
+
+<section id="interesCompuesto" class="contenedor">
+
+<h2>Interés Compuesto</h2>
+
+<p>
+
+El interés compuesto genera intereses sobre el capital y sobre los intereses acumulados.
+
+</p>
+
+<h2>
+
+VF = C(1+i)<sup>n</sup>
+
+</h2>
+
+<div class="calculadora">
+
+<label>Capital</label>
+
+<input type="number" id="capitalCompuesto">
+
+<label>Tasa (%)</label>
+
+<input type="number" id="tasaCompuesta">
+
+<label>Años</label>
+
+<input type="number" id="tiempoCompuesto">
+
+<button onclick="interesCompuesto()">
+
+Calcular
+
+</button>
+
+<h3 id="respuestaCompuesto"></h3>
+
+</div>
+
+</section>
+<!--==================================================-->
+<!-- CUOTAS Y PAGOS PERIÓDICOS -->
+<!--==================================================-->
+
+<section id="cuotas" class="contenedor">
+
+    <h2>Cuotas y Pagos Periódicos</h2>
+
+    <p>
+        Una cuota es el valor que debe pagarse periódicamente para cancelar un préstamo.
+        Se calcula considerando el capital, la tasa de interés y el número de cuotas.
+    </p>
+
+    <h3>Fórmula</h3>
+
+    <h2>
+        C = P × [ i(1+i)<sup>n</sup> ] / [ (1+i)<sup>n</sup> - 1 ]
+    </h2>
+
+    <div class="calculadora">
+
+        <label>Monto del préstamo</label>
+        <input type="number" id="montoCuota">
+
+        <label>Tasa (%)</label>
+        <input type="number" id="tasaCuota">
+
+        <label>Número de cuotas</label>
+        <input type="number" id="numeroCuotas">
+
+        <button onclick="calcularCuota()">
+            Calcular Cuota
+        </button>
+
+        <h3 id="respuestaCuota"></h3>
+
+    </div>
+
+</section>
+
+<!--==================================================-->
+<!-- REGISTRO DE CLIENTES -->
+<!--==================================================-->
+
+<section id="clientes" class="contenedor">
+
+    <h2>Registro de Clientes</h2>
+
+    <input type="text" id="cedula" placeholder="Cédula">
+    <input type="text" id="nombre" placeholder="Nombre completo">
+    <input type="text" id="telefono" placeholder="Teléfono">
+    <input type="email" id="correo" placeholder="Correo electrónico">
+
+    <button onclick="guardarCliente()">
+        Guardar Cliente
+    </button>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Cédula</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="tablaClientes">
+
+        </tbody>
+
+    </table>
+
+</section>
+
+<!--==================================================-->
+<!-- SIMULADOR DE CRÉDITO -->
+<!--==================================================-->
+
+<section id="credito" class="contenedor">
+
+    <h2>Simulación de Crédito</h2>
+
+    <label>Cliente</label>
+
+    <input type="text" id="clienteCredito">
+
+    <label>Monto</label>
+
+    <input type="number" id="montoCredito">
+
+    <label>Tasa anual (%)</label>
+
+    <input type="number" id="tasaCredito">
+
+    <label>Meses</label>
+
+    <input type="number" id="mesesCredito">
+
+    <button onclick="simularCredito()">
+
+        Simular Crédito
+
+    </button>
+
+    <h3 id="resultadoCredito"></h3>
+
+</section>
+
+<!--==================================================-->
+<!-- TABLA FRANCESA -->
+<!--==================================================-->
+
+<section class="contenedor">
+
+    <h2>Tabla de Amortización Francesa</h2>
+
+    <button onclick="tablaFrancesa()">
+
+        Generar Tabla
+
+    </button>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Cuota</th>
+                <th>Pago</th>
+                <th>Capital</th>
+                <th>Interés</th>
+                <th>Saldo</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="tablaFrancesa">
+
+        </tbody>
+
+    </table>
+
+</section>
+
+<!--==================================================-->
+<!-- TABLA ALEMANA -->
+<!--==================================================-->
+
+<section class="contenedor">
+
+    <h2>Tabla de Amortización Alemana</h2>
+
+    <button onclick="tablaAlemana()">
+
+        Generar Tabla
+
+    </button>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Cuota</th>
+                <th>Pago</th>
+                <th>Capital</th>
+                <th>Interés</th>
+                <th>Saldo</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="tablaAlemana">
+
+        </tbody>
+
+    </table>
+
+</section>
+
+<!--==================================================-->
+<!-- REGISTRO DE PAGOS -->
+<!--==================================================-->
+
+<section class="contenedor">
+
+    <h2>Registro de Pagos</h2>
+
+    <input type="text" id="clientePago" placeholder="Cliente">
+
+    <input type="number" id="valorPago" placeholder="Valor pagado">
+
+    <button onclick="registrarPago()">
+
+        Registrar Pago
+
+    </button>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Cliente</th>
+                <th>Valor</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="tablaPagos">
+
+        </tbody>
+
+    </table>
+
+</section>
+
+<!--==================================================-->
+<!-- PIE DE PÁGINA -->
+<!--==================================================-->
+
+<footer>
+
+    <h3>FinanSmart</h3>
+
+    <p>
+        Proyecto de Matemática Financiera desarrollado con HTML, CSS y JavaScript.
+    </p>
+
+    <p>
+        © 2026 - Todos los derechos reservados.
+    </p>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>

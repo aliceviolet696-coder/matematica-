@@ -17,6 +17,13 @@ body{
 
 }
 
+html{
+
+    scroll-behavior:smooth;
+    scroll-padding-top:120px;
+
+}
+
 /*========================*/
 
 header{
@@ -103,6 +110,8 @@ nav ul li a:hover{
 
     padding:70px;
 
+    scroll-margin-top:120px;
+
 }
 
 .banner h2{
@@ -130,18 +139,14 @@ nav ul li a:hover{
 .contenedor{
 
     width:90%;
-
     max-width:1100px;
-
     margin:40px auto;
-
     background:white;
-
     border-radius:12px;
-
     padding:30px;
-
     box-shadow:0px 0px 15px rgba(0,0,0,.12);
+
+    scroll-margin-top:120px;
 
 }
 

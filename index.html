@@ -36,6 +36,8 @@
 
             <li><a href="#credito">Crédito</a></li>
 
+            <li><a href="#costos">Costos y Presupuestos</a></li>
+
         </ul>
 
     </nav>
@@ -468,6 +470,102 @@ Calcular
         </tbody>
 
     </table>
+
+</section>
+
+<!--==================================================-->
+<!-- COSTOS Y PRESUPUESTOS -->
+<!--==================================================-->
+
+<section id="costos" class="contenedor">
+
+    <h2>Costos y Presupuestos</h2>
+
+    <h3>Clasificación de Costos</h3>
+
+    <p><b>Costos Fijos:</b> No cambian con el nivel de producción. Ej: alquiler, sueldos administrativos, seguros.</p>
+
+    <p><b>Costos Variables:</b> Varían proporcionalmente con el volumen de producción. Ej: materia prima, mano de obra directa, comisiones.</p>
+
+    <p><b>Costos Directos:</b> Se identifican directamente con el producto. Ej: materia prima, mano de obra directa.</p>
+
+    <p><b>Costos Indirectos:</b> No se identifican directamente y requieren distribución. Ej: alquiler, servicios públicos, depreciación.</p>
+
+    <h3>Calculadora de Costos y Punto de Equilibrio</h3>
+
+    <div class="calculadora">
+
+        <h3>Costos Fijos (mensuales)</h3>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <input type="text" id="nombreCF" placeholder="Concepto" style="flex:1;min-width:140px;">
+            <input type="number" id="valorCF" placeholder="Valor $" style="flex:1;min-width:120px;">
+            <button onclick="agregarCostoFijo()" style="margin:0;">+ Agregar</button>
+        </div>
+
+        <table>
+            <thead><tr><th>Concepto</th><th>Valor</th></tr></thead>
+            <tbody id="tablaCF"></tbody>
+        </table>
+
+        <h3>Costos Variables (por unidad)</h3>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <input type="text" id="nombreCV" placeholder="Concepto" style="flex:1;min-width:140px;">
+            <input type="number" id="valorCV" placeholder="Valor unitario $" style="flex:1;min-width:120px;">
+            <button onclick="agregarCostoVariable()" style="margin:0;">+ Agregar</button>
+        </div>
+
+        <table>
+            <thead><tr><th>Concepto</th><th>Valor Unitario</th></tr></thead>
+            <tbody id="tablaCV"></tbody>
+        </table>
+
+        <label>Precio de Venta por Unidad ($)</label>
+        <input type="number" id="precioVenta" placeholder="0.00">
+
+        <button onclick="calcularPuntoEquilibrio()">Calcular Punto de Equilibrio</button>
+
+        <h3 id="resultadoCostos" style="color:#0d47a1;font-size:18px;"></h3>
+
+    </div>
+
+    <h3>Costeo de Recetas</h3>
+
+    <div class="calculadora">
+
+        <p>Ingrese los ingredientes para calcular el costo total de la receta y el precio de venta sugerido.</p>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <input type="text" id="nombreIng" placeholder="Ingrediente" style="flex:1;min-width:120px;">
+            <input type="number" id="cantIng" placeholder="Cantidad" style="flex:1;min-width:80px;">
+            <input type="number" id="costoIng" placeholder="Costo unitario $" style="flex:1;min-width:100px;">
+            <button onclick="agregarIngrediente()" style="margin:0;">+ Agregar</button>
+        </div>
+
+        <table>
+            <thead><tr><th>Ingrediente</th><th>Cantidad</th><th>Costo Unit.</th><th>Subtotal</th></tr></thead>
+            <tbody id="tablaIngredientes"></tbody>
+        </table>
+
+        <label>Margen de Ganancia deseado (%)</label>
+        <input type="number" id="margenGanancia" value="30" placeholder="30">
+
+        <button onclick="calcularPrecioReceta()">Calcular Precio de Venta</button>
+
+        <h3 id="resultadoReceta" style="color:#0d47a1;font-size:18px;"></h3>
+
+    </div>
+
+    <h3>Aplicaciones Prácticas</h3>
+
+    <p><b>Sistemas de Costeo Empresarial:</b> Permiten determinar el costo real de productos o servicios, facilitando la fijación de precios y la toma de decisiones estratégicas.</p>
+
+    <p><b>Sistemas de Restaurantes:</b> Herramientas especializadas para el costeo de recetas, control de inventario de insumos y cálculo de márgenes por plato.</p>
+
+    <p><b>Sistemas de Inventario:</b> Control y valoración de existencias usando métodos como PEPS, UEPS o costo promedio ponderado.</p>
+
+    <p><b>Simuladores de Rentabilidad:</b> Modelos que proyectan escenarios de ingresos, costos y utilidades para evaluar la viabilidad de un negocio.</p>
 
 </section>
 
